@@ -1,0 +1,43 @@
+.chips { white-space: nowrap; margin-bottom: 20rpx; }
+.chip {
+  display: inline-block;
+  padding: 12rpx 24rpx;
+  border-radius: 28rpx;
+  background: #FFFFFF;
+  font-size: 24rpx;
+  color: #6B7280;
+  margin-right: 16rpx;
+}
+.chip.on { background: #2E6BFF; color: #FFFFFF; font-weight: 600; }
+
+.goods-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20rpx; }
+.goods { background: #FFFFFF; border-radius: 20rpx; overflow: hidden; }
+.goods .ph {
+  height: 220rpx;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  font-weight: 700;
+}
+.goods .body { padding: 18rpx 20rpx 24rpx; }
+.goods .tt { font-size: 26rpx; line-height: 1.4; height: 74rpx; overflow: hidden; margin-bottom: 10rpx; }
+.goods .price { font-size: 30rpx; }
+.goods .muted { font-size: 20rpx; margin-top: 6rpx; }
+
+.fab {
+  position: fixed;
+  right: 40rpx;
+  bottom: 160rpx;
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  background: #2E6BFF;
+  color: #FFFFFF;
+  font-size: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12rpx 24rpx rgba(46, 107, 255, 0.4);
+}

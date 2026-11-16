@@ -1,0 +1,20 @@
+<view class="container">
+  <scroll-view scroll-x class="chips">
+    <view wx:for="{{cats}}" wx:key="*this"
+          class="chip {{item === curCat ? 'on' : ''}}"
+          data-c="{{item}}" bindtap="pickCat">{{item}}</view>
+  </scroll-view>
+
+  <view class="goods-grid">
+    <view class="goods" wx:for="{{list}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+      <view class="ph" style="background:linear-gradient(135deg,#2E6BFF,#5B8CFF)">{{item.cat}}</view>
+      <view class="body">
+        <view class="tt">{{item.title}}</view>
+        <view class="price">¥{{item.price}}</view>
+        <view class="muted">{{item.loc}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="fab" bindtap="goPublish">+</view>
+</view>

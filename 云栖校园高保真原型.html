@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>云栖校园 · 高保真原型</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%232E6BFF'/><text x='50' y='66' font-size='48' text-anchor='middle' fill='white' font-family='sans-serif'>云</text></svg>">
+<style>
+  :root{
+    --primary:#2E6BFF; --primary-dark:#1F56D6; --bg:#F5F7FA; --card:#ffffff;
+    --text:#1A1D26; --sub:#6B7280; --line:#ECEEF2; --green:#07C160; --orange:#FF9500;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:linear-gradient(135deg,#E9EDF5 0%,#DCE4F2 100%);
+    min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 0;
+    color:var(--text);
+  }
+  .stage{display:flex;flex-direction:column;align-items:center;gap:14px}
+  .stage .hint{font-size:12px;color:#8a93a6;letter-spacing:.5px}
+  /* 手机外壳 */
+  .phone{
+    width:390px;height:780px;background:#0B0D12;border-radius:46px;padding:12px;
+    box-shadow:0 30px 80px rgba(31,55,120,.28),0 4px 16px rgba(0,0,0,.15);
+    position:relative;
+  }
+  .screen{
+    width:100%;height:100%;background:var(--bg);border-radius:36px;overflow:hidden;
+    display:flex;flex-direction:column;position:relative;
+  }
+  /* 状态栏 */
+  .statusbar{
+    height:38px;flex:0 0 38px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 22px;font-size:13px;font-weight:600;color:var(--text);background:#fff;
+  }
+  .statusbar .icons{display:flex;gap:6px;align-items:center}
+  /* 导航栏 */
+  .navbar{
+    flex:0 0 46px;background:#fff;display:flex;align-items:center;justify-content:center;
+    position:relative;border-bottom:1px solid var(--line);font-size:17px;font-weight:600;
+  }
+  .navbar .back{
+    position:absolute;left:14px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);
+  }
+  /* 内容区 */
+  .view{flex:1;overflow-y:auto;padding:14px 14px 90px;scrollbar-width:none}
+  .view::-webkit-scrollbar{display:none}
+  /* 底部 Tabbar */
+  .tabbar{
+    position:absolute;left:0;right:0;bottom:0;height:64px;background:#fff;
+    border-top:1px solid var(--line);display:flex;
+  }
+  .tabbar .tab{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    font-size:10px;color:var(--sub);cursor:pointer;
+  }
+  .tabbar .tab svg{width:23px;height:23px}
+  .tabbar .tab.active{color:var(--primary);font-weight:600}
+  /* 通用组件 */
+  .search{
+    background:#F0F2F7;border-radius:18px;height:36px;display:flex;align-items:center;
+    padding:0 14px;gap:8px;color:var(--sub);font-size:13px;cursor:pointer;
+  }
+  .card{background:var(--card);border-radius:14px;box-shadow:0 2px 8px rgba(30,50,100,.05)}
+  .btn{
+    display:block;text-align:center;background:var(--primary);color:#fff;border-radius:22px;
+    height:44px;line-height:44px;font-size:15px;font-weight:600;cursor:pointer;border:none;width:100%;
+  }
+  .btn.green{background:var(--green)}
+  .btn.ghost{background:#EEF3FF;color:var(--primary)}
+  .tag{
+    display:inline-block;font-size:10px;padding:2px 8px;border-radius:8px;background:#EEF3FF;color:var(--primary);
+  }
+  /* 首页 */
+  .banner{
+    margin-bottom:14px;height:110px;border-radius:18px;color:#fff;position:relative;overflow:hidden;
+    background:linear-gradient(120deg,#2E6BFF 0%,#5B8CFF 60%,#8FB0FF 100%);
+    padding:18px 18px;display:flex;flex-direction:column;justify-content:center;
+  }
+  .banner::after{content:"";position:absolute;right:-30px;top:-30px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.15)}
+  .banner .t1{font-size:18px;font-weight:700;margin-bottom:6px}
+  .banner .t2{font-size:12px;opacity:.9}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+  .grid .g{
+    background:var(--card);border-radius:14px;padding:12px 4px;display:flex;flex-direction:column;
+    align-items:center;gap:6px;font-size:12px;color:var(--text);cursor:pointer;
+  }
+  .grid .g .ic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+  .grid .g .ic svg{width:21px;height:21px}
+  .sec-title{display:flex;justify-content:space-between;align-items:center;margin:6px 2px 10px}
+  .sec-title h3{font-size:15px;font-weight:700}
+  .sec-title span{font-size:12px;color:var(--sub);cursor:pointer}
+  .news-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .news-item:last-child{border-bottom:none}
+  .news-thumb{
+    width:86px;height:62px;border-radius:10px;flex:0 0 86px;display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:22px;font-weight:700;
+  }
+  .news-item .ti{font-size:14px;line-height:1.45;margin-bottom:6px}
+  .news-item .meta{font-size:11px;color:var(--sub)}
+  /* 课表 */
+  .weekbar{display:flex;gap:8px;overflow-x:auto;padding:2px;margin-bottom:12px}
+  .weekbar .w{flex:0 0 auto;padding:6px 12px;border-radius:14px;background:#fff;font-size:12px;color:var(--sub);cursor:pointer}
+  .weekbar .w.on{background:var(--primary);color:#fff;font-weight:600}
+  .daybar{display:flex;background:#fff;border-radius:14px;padding:4px;margin-bottom:12px}
+  .daybar .d{flex:1;text-align:center;font-size:13px;padding:8px 0;color:var(--sub);border-radius:11px;cursor:pointer}
+  .daybar .d.on{background:#EEF3FF;color:var(--primary);font-weight:700}
+  .sched{display:grid;grid-template-columns:34px 1fr;gap:8px}
+  .sched .sec-num{
+    display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--sub);
+  }
+  .course{
+    border-radius:10px;padding:10px;font-size:12px;line-height:1.4;color:#fff;min-height:52px;margin-bottom:8px;
+  }
+  .course b{font-size:13px;display:block;margin-bottom:2px}
+  .course span{font-size:10px;opacity:.9}
+  .empty{color:#C2C8D4;font-size:12px;text-align:center;padding:18px 0}
+  /* 二手列表 */
+  .chips{display:flex;gap:8px;overflow-x:auto;margin-bottom:12px}
+  .chips .c{flex:0 0 auto;padding:6px 12px;border-radius:14px;background:#fff;font-size:12px;color:var(--sub);cursor:pointer}
+  .chips .c.on{background:var(--primary);color:#fff;font-weight:600}
+  .goods-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .goods{background:var(--card);border-radius:14px;overflow:hidden;cursor:pointer}
+  .goods .ph{
+    height:110px;display:flex;align-items:center;justify-content:center;color:#fff;
+  }
+  .goods .ph svg{width:34px;height:34px}
+  .goods .body{padding:9px 10px 12px}
+  .goods .tt{font-size:13px;line-height:1.4;height:36px;overflow:hidden;margin-bottom:6px}
+  .goods .pr{color:#FF4D3D;font-weight:700;font-size:15px}
+  .goods .loc{font-size:10px;color:var(--sub);margin-top:3px}
+  .fab{
+    position:absolute;right:16px;bottom:80px;width:54px;height:54px;border-radius:50%;
+    background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 20px rgba(46,107,255,.4);cursor:pointer;z-index:5;
+  }
+  .fab svg{width:26px;height:26px}
+  /* 详情 */
+  .hero{height:200px;border-radius:18px;display:flex;align-items:center;justify-content:center;color:#fff;margin-bottom:14px}
+  .hero svg{width:64px;height:64px}
+  .price{color:#FF4D3D;font-size:24px;font-weight:800}
+  .meta-row{display:flex;gap:8px;font-size:12px;color:var(--sub);margin:8px 0}
+  .block{background:var(--card);border-radius:14px;padding:14px;margin-bottom:12px}
+  .block h4{font-size:13px;margin-bottom:8px}
+  .block p{font-size:13px;line-height:1.7;color:#3A3F4C}
+  .seller{display:flex;align-items:center;gap:10px}
+  .avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#7AA5FF,#B7CDFF);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .bottom-bar{
+    position:absolute;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);
+    padding:10px 14px calc(10px + 10px);display:flex;gap:10px;align-items:center;
+  }
+  .bottom-bar .fav{display:flex;flex-direction:column;align-items:center;font-size:10px;color:var(--sub);width:46px;cursor:pointer}
+  .bottom-bar .fav svg{width:22px;height:22px;margin-bottom:2px}
+  /* 表单 */
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:13px;color:var(--sub);margin-bottom:6px}
+  .input,.textarea{
+    width:100%;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 12px;
+    font-size:14px;outline:none;font-family:inherit;
+  }
+  .textarea{min-height:88px;resize:none}
+  .upload{
+    border:1.5px dashed #C9D2E4;border-radius:12px;height:88px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;color:#9AA3B5;font-size:12px;gap:6px;cursor:pointer;background:#fff;
+  }
+  /* 失物 */
+  .lost-tabs{display:flex;background:#fff;border-radius:14px;margin-bottom:12px;padding:4px}
+  .lost-tabs .lt{flex:1;text-align:center;padding:8px 0;font-size:13px;color:var(--sub);border-radius:11px;cursor:pointer}
+  .lost-tabs .lt.on{background:#FFEFE9;color:#F06B3B;font-weight:700}
+  .lost-card{background:#fff;border-radius:14px;padding:13px;margin-bottom:10px}
+  .lost-card .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+  .badge{font-size:10px;padding:2px 8px;border-radius:8px}
+  .badge.miss{background:#FFF1E8;color:#F06B3B}
+  .badge.found{background:#E8F7EE;color:#07C160}
+  .lost-card .tt{font-size:14px;font-weight:600;margin-bottom:6px}
+  .lost-card .row{font-size:12px;color:var(--sub);display:flex;gap:5px;align-items:center;margin-top:4px}
+  .lost-card .row svg{width:13px;height:13px}
+  /* 我的 */
+  .me-card{
+    background:linear-gradient(135deg,#2E6BFF,#5B8CFF);border-radius:18px;color:#fff;
+    padding:20px 16px;display:flex;align-items:center;gap:14px;margin-bottom:14px;
+  }
+  .me-card .avatar{width:56px;height:56px;background:rgba(255,255,255,.25)}
+  .me-card .n{font-size:17px;font-weight:700;margin-bottom:4px}
+  .me-card .r{font-size:11px;opacity:.85}
+  .menu{background:#fff;border-radius:14px;overflow:hidden}
+  .menu .m{
+    display:flex;align-items:center;gap:12px;padding:14px 14px;border-bottom:1px solid var(--line);font-size:14px;cursor:pointer;
+  }
+  .menu .m:last-child{border-bottom:none}
+  .menu .m svg{width:19px;height:19px;color:var(--sub)}
+  .menu .m .arr{margin-left:auto;color:#C2C8D4}
+  /* Toast */
+  .toast{
+    position:absolute;left:50%;bottom:120px;transform:translateX(-50%);background:rgba(20,25,40,.85);
+    color:#fff;font-size:13px;padding:10px 18px;border-radius:20px;opacity:0;transition:.25s;z-index:20;white-space:nowrap;
+  }
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+      <div class="statusbar">
+        <span>9:41</span>
+        <div class="icons">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="8" width="3" height="4"/><rect x="4" y="5" width="3" height="7"/><rect x="8" y="2" width="3" height="10"/><rect x="12" y="0" width="3" height="12"/></svg>
+          <svg width="22" height="12" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="20" height="11" rx="3" fill="none" stroke="currentColor"/><rect x="2" y="2" width="15" height="8" rx="1.5" fill="currentColor"/><rect x="22" y="3.5" width="2" height="5" rx="1" fill="currentColor"/></svg>
+        </div>
+      </div>
+      <div class="navbar" id="navbar">云栖校园</div>
+      <div class="view" id="view"></div>
+      <div class="tabbar" id="tabbar"></div>
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+  <div class="hint">云栖校园 · V1.0 高保真交互原型（演示数据，点击可跳转）</div>
+</div>
+
+<script>
+/* ============ 演示数据 ============ */
+const GOODS=[
+  {id:1,cat:'教材',title:'《数据结构》C 语言版 二手教材',price:18,loc:'东校区',desc:'八成新，无笔记，书角干净。考研复习用书，配套习题解答一并赠送。',date:'11-15'},
+  {id:2,cat:'电子',title:'罗技 M330 静音鼠标',price:45,loc:'西宿舍',desc:'自用一年，静音按键，一节电池可用 9 个月。',date:'11-14'},
+  {id:3,cat:'代步',title:'捷安特 ATX 660 山地车',price:420,loc:'东校区车棚',desc:'毕业出，车况良好，刚做过保养，送车锁。',date:'11-12'},
+  {id:4,cat:'生活用品',title:'宿舍小冰箱 48L',price:160,loc:'南宿舍',desc:'制冷正常，宿舍限电前一直使用，需自提。',date:'11-11'},
+  {id:5,cat:'教材',title:'高等数学 第七版 上下册',price:22,loc:'东校区',desc:'同济大学版，书角轻微磨损，内页干净。',date:'11-10'},
+  {id:6,cat:'电子',title:'小米手环 8 NFC 版',price:120,loc:'西宿舍',desc:'带原装充电器，无拆修，表带可换。',date:'11-09'}
+];
+const LOST=[
+  {type:'miss',title:'银灰色 U 盘遗失',place:'图书馆三楼自习区',time:'11-14 19:20',desc:'闪迪 64G，内有课程资料，捡到必有重谢。'},
+  {type:'found',title:'捡到校园卡一张',place:'一食堂二楼',time:'11-15 12:10',desc:'卡号尾号 8821，请失主联系认领。'},
+  {type:'miss',title:'AirPods 耳机仓',place:'操场跑道',time:'11-13 18:00',desc:'白色 Pro，夜跑时遗失。'},
+  {type:'found',title:'捡到黑色折叠伞',place:'教学楼 A 栋大厅',time:'11-15 17:40',desc:'已放大厅保安处。'}
+];
+const NEWS=[
+  {id:1,title:'关于举办 2026 年冬季校园双选会的通知',date:'11-12',summary:'12 月 5 日体育馆，200 家企业进校招聘',color:['#2E6BFF','#5B8CFF'],
+   body:'各学院、全体同学：为促进 2027 届毕业生就业，学校定于 12 月 5 日在体育馆举办冬季校园双选会。参会企业涵盖信息技术、智能制造、教育、金融等行业共 200 家，提供岗位 6000 余个。\n请同学们携带简历到场，提前通过就业系统预约场次。活动当天设政策咨询区与简历门诊。'},
+  {id:2,title:'图书馆延长自习区开放时间至 23:30',date:'11-10',summary:'期末考试周临近，四层自习区开放至 23:30',color:['#07C160','#3FC98A'],
+   body:'期末考试周临近，为满足同学们的复习需求，图书馆四层自习区自 11 月 17 日起延长开放至 23:30。\n请读者自觉保持安静，离座时带走个人物品。占座超过 30 分钟将被清理。'},
+  {id:3,title:'校团委：冬季运动会报名开始',date:'11-08',summary:'长跑、跳绳、拔河等项目，本周截止',color:['#FF9500','#FFB84D'],
+   body:'冬季运动会将于 12 月中旬举行，设男子 1000 米、女子 800 米、集体跳绳、拔河等项目。\n以班级为单位报名，截止时间为本周五 17:00。欢迎同学们踊跃参加。'}
+];
+const SCHEDULE={
+  1:[{sec:2,start:1,span:1,name:'高等数学',room:'教三-201',teacher:'王老师',c:'#2E6BFF'},
+     {sec:4,start:3,span:1,name:'大学英语',room:'外语楼-305',teacher:'刘老师',c:'#07C160'}],
+  2:[{sec:1,start:0,span:1,name:'电路原理',room:'教一-102',teacher:'陈老师',c:'#7A5CFF'}],
+  3:[{sec:3,start:2,span:1,name:'体育（篮球）',room:'东区体育馆',teacher:'赵老师',c:'#F06B3B'}],
+  4:[{sec:2,start:1,span:1,name:'数据结构',room:'实验楼-407',teacher:'周老师',c:'#2E6BFF'}],
+  5:[{sec:5,start:4,span:1,name:'形势与政策',room:'大礼堂',teacher:'马老师',c:'#00A3A3'}]
+};
+const CATS=['全部','教材','电子','生活用品','代步'];
+const CAT_COLOR={'教材':'#7A5CFF','电子':'#2E6BFF','生活用品':'#07C160','代步':'#F06B3B','其他':'#FF9500'};
+
+/* ============ 图标 ============ */
+const I=(p,size)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="'+(size||20)+'" height="'+(size||20)+'">'+p+'</svg>';
+const IC={
+  home:I('<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>',22),
+  sched:I('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/>',22),
+  tag:I('<path d="M3 12l8-8h9v9l-8 8z"/><circle cx="15" cy="9" r="1.4"/>',22),
+  lost:I('<path d="M3 7h18v13H3z"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/>',22),
+  me:I('<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',22),
+  search:I('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',16),
+  plus:I('<path d="M12 5v14M5 12h14"/>',26),
+  back:I('<path d="M15 5l-7 7 7 7"/>',20),
+  news:I('<path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h8M8 17h5"/>',20),
+  clock:I('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',13),
+  place:I('<path d="M12 21s-7-6-7-11a7 7 0 1 1 14 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',13),
+  phone:I('<path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',18),
+  heart:I('<path d="M12 20s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/>',18),
+  camera:I('<path d="M4 8h3l2-3h6l2 3h3v12H4z"/><circle cx="12" cy="13" r="3.5"/>',26),
+  doc:I('<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/>',18),
+  chat:I('<path d="M4 5h16v11H9l-5 4z"/>',18),
+  set:I('<circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.5-2.3 1a7 7 0 0 0-2-1.2L14 3h-4l-.6 2.6a7 7 0 0 0-2 1.2l-2.3-1-2 3.5 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.5 2.3-1a7 7 0 0 0 2 1.2L10 21h4l.6-2.6a7 7 0 0 0 2-1.2l2.3 1 2-3.5-2-1.5c.1-.4.1-.8.1-1.2z"/>',18)
+};
+
+/* ============ 状态 ============ */
+let curCat='全部'; let lostType='miss'; let curDay=1;
+const TABS=[
+  {key:'home',label:'首页',ic:IC.home,hash:'#/home'},
+  {key:'schedule',label:'课表',ic:IC.sched,hash:'#/schedule'},
+  {key:'market',label:'二手',ic:IC.tag,hash:'#/market'},
+  {key:'lost',label:'失物',ic:IC.lost,hash:'#/lost'},
+  {key:'me',label:'我的',ic:IC.me,hash:'#/profile'}
+];
+
+/* ============ 工具 ============ */
+function go(h){location.hash=h;window.scrollTo(0,0);}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1500);
+}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function catPh(cat){const c=CAT_COLOR[cat]||'#2E6BFF';
+  return '<div class="ph" style="background:linear-gradient(135deg,'+c+','+c+'BB)">'+IC.doc+'</div>';}
+
+/* ============ 视图：首页 ============ */
+function viewHome(){
+  const news=NEWS.slice(0,3).map(n=>
+    '<div class="news-item" onclick="go(\'#/news/'+n.id+'\')">'+
+      '<div class="news-thumb" style="background:linear-gradient(135deg,'+n.color[0]+','+n.color[1]+')">'+IC.news+'</div>'+
+      '<div style="flex:1;min-width:0"><div class="ti">'+esc(n.title)+'</div>'+
+      '<div class="meta">'+n.date+' · 阅读 1.2k</div></div></div>').join('');
+  return ''+
+  '<div class="search" onclick="toast(\'原型演示：搜索框\')">'+IC.search+'搜索教材 / 闲置 / 物品</div>'+
+  '<div style="height:12px"></div>'+
+  '<div class="banner"><div class="t1">校园生活，一站搞定</div>'+
+  '<div class="t2">课表 · 二手 · 失物招领 · 校园资讯</div></div>'+
+  '<div class="grid">'+
+    '<div class="g" onclick="go(\'#/schedule\')"><div class="ic" style="background:#EEF3FF;color:#2E6BFF">'+IC.sched+'</div>课表</div>'+
+    '<div class="g" onclick="go(\'#/market\')"><div class="ic" style="background:#FFF1E8;color:#F06B3B">'+IC.tag+'</div>二手</div>'+
+    '<div class="g" onclick="go(\'#/lost\')"><div class="ic" style="background:#E8F7EE;color:#07C160">'+IC.lost+'</div>失物</div>'+
+    '<div class="g" onclick="go(\'#/news\')"><div class="ic" style="background:#F3EDFF;color:#7A5CFF">'+IC.news+'</div>资讯</div>'+
+    '<div class="g" onclick="toast(\'跑腿代办：V1.1 预留\')"><div class="ic" style="background:#FFF7E6;color:#FF9500">'+IC.chat+'</div>跑腿</div>'+
+    '<div class="g" onclick="go(\'#/profile\')"><div class="ic" style="background:#EEF3FF;color:#2E6BFF">'+IC.me+'</div>我的发布</div>'+
+  '</div>'+
+  '<div class="sec-title"><h3>校园资讯</h3><span onclick="go(\'#/news\')">全部 ›</span></div>'+
+  '<div class="card" style="padding:4px 14px">'+news+'</div>';
+}
+
+/* ============ 视图：课表 ============ */
+function viewSchedule(){
+  const days=['一','二','三','四','五'];
+  const rows=[];
+  for(let i=1;i<=5;i++){
+    const cls=(SCHEDULE[curDay]||[]).filter(c=>c.sec===i);
+    rows.push('<div class="sec-num">'+(i*2-1)+'-'+(i*2)+'</div>'+
+      (cls.length?('<div class="course" style="background:'+cls[0].c+'"><b>'+esc(cls[0].name)+'</b><span>'+esc(cls[0].room)+' · '+esc(cls[0].teacher)+'</span></div>')
+                :'<div class="empty">—</div>'));
+  }
+  return '<div class="weekbar">'+[5,6,7,8,9].map(w=>'<div class="w '+(w===8?'on':'')+'" onclick="toast(\'第'+w+'周\')">第'+w+'周</div>').join('')+'</div>'+
+  '<div class="daybar">'+days.map((d,i)=>'<div class="d '+(curDay===i+1?'on':'')+'" onclick="curDay='+(i+1)+';render()">周'+d+'</div>').join('')+'</div>'+
+  '<div class="card" style="padding:12px"><div class="sched">'+rows.join('')+'</div></div>';
+}
+
+/* ============ 视图：二手市场 ============ */
+function viewMarket(){
+  const list=curCat==='全部'?GOODS:GOODS.filter(g=>g.cat===curCat);
+  const items=list.map(g=>
+    '<div class="goods" onclick="go(\'#/goods/'+g.id+'\')">'+catPh(g.cat)+
+    '<div class="body"><div class="tt">'+esc(g.title)+'</div>'+
+    '<div class="pr">¥'+g.price+'</div><div class="loc">'+esc(g.loc)+'</div></div></div>').join('');
+  return '<div class="search" onclick="toast(\'原型演示：搜索\')">'+IC.search+'搜索闲置物品</div>'+
+  '<div style="height:12px"></div>'+
+  '<div class="chips">'+CATS.map(c=>'<div class="c '+(curCat===c?'on':'')+'" onclick="curCat=\''+c+'\';render()">'+c+'</div>').join('')+'</div>'+
+  '<div class="goods-grid">'+items+'</div>'+
+  '<div class="fab" onclick="go(\'#/publish\')">'+IC.plus+'</div>';
+}
+
+/* ============ 视图：商品详情 ============ */
+function viewGoods(h){
+  const id=parseInt((h.split('/')[2]||'1').split('?')[0],10);
+  const g=GOODS.find(x=>x.id===id)||GOODS[0];
+  const c=CAT_COLOR[g.cat];
+  return '<div class="hero" style="background:linear-gradient(135deg,'+c+','+c+'BB)">'+IC.doc+'</div>'+
+  '<div class="price">¥'+g.price+'</div>'+
+  '<div style="font-size:16px;font-weight:700;margin:8px 0">'+esc(g.title)+'</div>'+
+  '<div class="meta-row"><span class="tag">'+g.cat+'</span><span>'+g.loc+'</span><span>'+g.date+'</span></div>'+
+  '<div class="block"><h4>商品描述</h4><p>'+esc(g.desc)+'</p></div>'+
+  '<div class="block"><div class="seller"><div class="avatar">同</div><div>'+
+  '<div style="font-weight:600;font-size:14px">同学A</div>'+
+  '<div class="meta-row" style="margin:2px 0 0">信用良好 · 已发布 3 件</div></div></div></div>'+
+  '<div style="height:80px"></div>'+
+  '<div class="bottom-bar">'+
+    '<div class="fav" onclick="toast(\'已收藏\')">'+IC.heart+'收藏</div>'+
+    '<button class="btn green" onclick="toast(\'演示：调起微信咨询\')">联系卖家</button>'+
+  '</div>';
+}
+
+/* ============ 视图：发布二手 ============ */
+function viewPublish(){
+  return '<div class="field"><label>标题</label><input class="input" placeholder="一句话描述物品，如：九成新教材"></div>'+
+  '<div class="field"><label>分类</label><div class="chips">'+['教材','电子','生活用品','代步','其他'].map(c=>'<div class="c">'+c+'</div>').join('')+'</div></div>'+
+  '<div class="field"><label>价格（元）</label><input class="input" type="number" placeholder="0"></div>'+
+  '<div class="field"><label>描述</label><textarea class="textarea" placeholder="成色、入手时间、交易地点…"></textarea></div>'+
+  '<div class="field"><label>上传图片（最多 3 张）</label><div class="upload" onclick="toast(\'原型演示：选择图片\)">'+IC.camera+'点击上传</div></div>'+
+  '<div class="field"><label>联系方式</label><input class="input" placeholder="微信号 / 手机号"></div>'+
+  '<div style="height:12px"></div>'+
+  '<button class="btn" onclick="toast(\'发布成功（演示）\');setTimeout(function(){go(\'#/market\')},700)">提交发布</button>';
+}
+
+/* ============ 视图：失物招领 ============ */
+function viewLost(){
+  const list=LOST.filter(x=>x.type===lostType);
+  const cards=list.map(l=>
+    '<div class="lost-card"><div class="top"><span class="badge '+l.type+'">'+(l.type==='miss'?'寻物启事':'招领启事')+'</span>'+
+    '<span style="font-size:11px;color:var(--sub)">'+l.time+'</span></div>'+
+    '<div class="tt">'+esc(l.title)+'</div>'+
+    '<div style="font-size:12px;color:#3A3F4C;line-height:1.5">'+esc(l.desc)+'</div>'+
+    '<div class="row">'+IC.place+esc(l.place)+'</div></div>').join('');
+  return '<div class="lost-tabs"><div class="lt '+(lostType==='miss'?'on':'')+'" onclick="lostType=\'miss\';render()">寻物启事</div>'+
+  '<div class="lt '+(lostType==='found'?'on':'')+'" onclick="lostType=\'found\';render()">招领启事</div></div>'+
+  cards+
+  '<div class="fab" onclick="toast(\'演示：发布启事\')">'+IC.plus+'</div>';
+}
+
+/* ============ 视图：资讯列表 ============ */
+function viewNews(){
+  return NEWS.map(n=>
+    '<div class="news-item" onclick="go(\'#/news/'+n.id+'\')">'+
+    '<div class="news-thumb" style="background:linear-gradient(135deg,'+n.color[0]+','+n.color[1]+')">'+IC.news+'</div>'+
+    '<div style="flex:1;min-width:0"><div class="ti">'+esc(n.title)+'</div>'+
+    '<div class="meta">'+n.date+' · '+esc(n.summary)+'</div></div></div>').join('');
+}
+
+/* ============ 视图：资讯详情 ============ */
+function viewNewsDetail(h){
+  const id=parseInt((h.split('/')[2]||'1').split('?')[0],10);
+  const n=NEWS.find(x=>x.id===id)||NEWS[0];
+  const paras=n.body.split('\n').map(p=>'<p>'+esc(p)+'</p>').join('');
+  return '<div class="hero" style="background:linear-gradient(135deg,'+n.color[0]+','+n.color[1]+')">'+IC.news+'</div>'+
+  '<div style="font-size:18px;font-weight:700;line-height:1.5;margin:6px 0">'+esc(n.title)+'</div>'+
+  '<div class="meta-row">校团委 · '+n.date+' · 阅读 1.2k</div>'+
+  '<div class="block">'+paras+'</div>';
+}
+
+/* ============ 视图：我的 ============ */
+function viewProfile(){
+  const items=[[IC.doc,'我的发布'],[IC.heart,'我的收藏'],[IC.chat,'联系客服'],[IC.set,'设置']];
+  return '<div class="me-card"><div class="avatar">同</div><div><div class="n">同学A</div>'+
+  '<div class="r">微信授权登录 · 在校学生</div></div></div>'+
+  '<div class="menu">'+items.map(it=>
+    '<div class="m" onclick="toast(\'演示：'+it[1]+'\')">'+it[0]+it[1]+'<span class="arr">›</span></div>').join('')+'</div>'+
+  '<div style="text-align:center;color:#B6BDCC;font-size:11px;margin-top:18px">云栖校园 V1.0 原型</div>';
+}
+
+/* ============ 渲染入口 ============ */
+const ROUTES=[
+  {re:/^#\/home/,title:'云栖校园',tab:'home',back:false,render:viewHome},
+  {re:/^#\/schedule/,title:'我的课表',tab:'schedule',back:false,render:viewSchedule},
+  {re:/^#\/market/,title:'二手市场',tab:'market',back:false,render:viewMarket},
+  {re:/^#\/goods/,title:'商品详情',tab:'market',back:true,render:viewGoods},
+  {re:/^#\/publish/,title:'发布二手',tab:'market',back:true,render:viewPublish},
+  {re:/^#\/lost/,title:'失物招领',tab:'lost',back:false,render:viewLost},
+  {re:/^#\/news\/\d+/,title:'资讯详情',tab:null,back:true,render:viewNewsDetail},
+  {re:/^#\/news/,title:'校园资讯',tab:null,back:false,render:viewNews},
+  {re:/^#\/profile/,title:'我的',tab:'me',back:false,render:viewProfile}
+];
+function render(){
+  const h=location.hash||'#/home';
+  let route=ROUTES.find(r=>r.re.test(h))||ROUTES[0];
+  document.getElementById('navbar').innerHTML=
+    (route.back?('<div class="back" onclick="history.back()">'+IC.back+'</div>'):'')+route.title;
+  document.getElementById('view').innerHTML=route.render(h);
+  document.getElementById('tabbar').innerHTML=TABS.map(t=>
+    '<div class="tab '+(t.key===route.tab?'active':'')+'" onclick="go(\''+t.hash+'\')">'+t.ic+t.label+'</div>').join('');
+  document.querySelector('.view').scrollTop=0;
+}
+window.addEventListener('hashchange',render);
+render();
+</script>
+</body>
+</html>

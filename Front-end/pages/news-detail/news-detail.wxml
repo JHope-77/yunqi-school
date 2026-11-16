@@ -1,0 +1,6 @@
+<view class="container" wx:if="{{detail}}">
+  <view class="title">{{detail.title}}</view>
+  <view class="muted">{{detail.date}} · 校园公告</view>
+  <view class="divider"></view>
+  <view class="body">{{detail.body}}</view>
+</view>

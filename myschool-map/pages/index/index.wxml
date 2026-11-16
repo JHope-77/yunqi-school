@@ -1,0 +1,33 @@
+<view class="page">
+  <view class="search-bar">
+    <input class="input" placeholder="搜索校园地点（如：食堂 / 图书馆）" value="{{keyword}}" bindinput="onInput" confirm-type="search" bindconfirm="doSearch" />
+    <view class="search-btn" bindtap="doSearch">搜索</view>
+  </view>
+
+  <view class="tabs">
+    <view class="tab {{activeTab===0?'on':''}}" data-t="0" bindtap="switchTab">校园全景</view>
+    <view class="tab {{activeTab===1?'on':''}}" data-t="1" bindtap="switchTab">周边设施</view>
+    <view class="tab {{activeTab===2?'on':''}}" data-t="2" bindtap="switchTab">导航模式</view>
+  </view>
+
+  <map
+    id="campusMap"
+    class="map"
+    latitude="{{latitude}}"
+    longitude="{{longitude}}"
+    scale="{{scale}}"
+    markers="{{markers}}"
+    polyline="{{polyline}}"
+    show-location
+    enable-zoom
+    enable-scroll
+    onmarkertap="onMarkerTap"
+  ></map>
+
+  <view class="result-list" wx:if="{{results.length}}">
+    <view class="ri" wx:for="{{results}}" wx:key="id" data-index="{{index}}" bindtap="pickResult">
+      <view class="rn">{{item.title}}</view>
+      <view class="ra">{{item.address}}</view>
+    </view>
+  </view>
+</view>

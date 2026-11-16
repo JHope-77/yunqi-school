@@ -1,0 +1,31 @@
+<view class="container">
+  <view class="field">
+    <view class="label">标题</view>
+    <input class="input" placeholder="一句话描述物品" data-field="title" bindinput="onInput" />
+  </view>
+
+  <view class="field">
+    <view class="label">分类</view>
+    <scroll-view scroll-x class="chips">
+      <view wx:for="{{['教材','电子','生活用品','代步','其他']}}" wx:key="*this"
+            class="chip {{item === cat ? 'on' : ''}}" data-c="{{item}}" bindtap="pickCat">{{item}}</view>
+    </scroll-view>
+  </view>
+
+  <view class="field">
+    <view class="label">价格（元）</view>
+    <input class="input" type="number" placeholder="0" data-field="price" bindinput="onInput" />
+  </view>
+
+  <view class="field">
+    <view class="label">描述</view>
+    <textarea class="textarea" placeholder="成色、入手时间、交易地点…" data-field="desc" bindinput="onInput" />
+  </view>
+
+  <view class="field">
+    <view class="label">联系方式</view>
+    <input class="input" placeholder="微信号 / 手机号" data-field="contact" bindinput="onInput" />
+  </view>
+
+  <button class="btn-primary" bindtap="onSubmit">提交发布</button>
+</view>

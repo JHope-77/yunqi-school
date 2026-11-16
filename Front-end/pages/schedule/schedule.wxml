@@ -1,0 +1,26 @@
+<view class="container">
+  <scroll-view scroll-x class="weekbar">
+    <view wx:for="{{weeks}}" wx:key="*this"
+          class="week {{item === currentWeek ? 'on' : ''}}"
+          data-w="{{item}}" bindtap="pickWeek">第{{item}}周</view>
+  </scroll-view>
+
+  <view class="daybar">
+    <view wx:for="{{days}}" wx:key="*this"
+          class="day {{index + 1 === currentDay ? 'on' : ''}}"
+          data-d="{{index + 1}}" bindtap="pickDay">周{{item}}</view>
+  </view>
+
+  <view class="card">
+    <view class="row" wx:for="{{rows}}" wx:key="sec">
+      <view class="sec-num">{{item.sec * 2 - 1}}-{{item.sec * 2}}</view>
+      <view class="course" style="background:{{item.color}}">
+        <block wx:if="{{!item.empty}}">
+          <view class="c-name">{{item.name}}</view>
+          <view class="c-meta">{{item.room}} · {{item.teacher}}</view>
+        </block>
+        <view wx:else class="c-empty">—</view>
+      </view>
+    </view>
+  </view>
+</view>

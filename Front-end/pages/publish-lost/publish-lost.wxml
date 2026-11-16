@@ -1,0 +1,30 @@
+<view class="container">
+  <view class="field">
+    <view class="label">类型</view>
+    <view class="types">
+      <view class="tp {{type === 'miss' ? 'on red' : ''}}" data-t="miss" bindtap="pickType">寻物启事</view>
+      <view class="tp {{type === 'found' ? 'on green' : ''}}" data-t="found" bindtap="pickType">捡到物品</view>
+    </view>
+  </view>
+  <view class="field">
+    <view class="label">标题</view>
+    <input class="input" placeholder="如：遗失银色 U 盘" data-field="title" bindinput="onInput" />
+  </view>
+  <view class="field">
+    <view class="label">地点</view>
+    <input class="input" placeholder="如：图书馆三楼" data-field="place" bindinput="onInput" />
+  </view>
+  <view class="field">
+    <view class="label">时间</view>
+    <input class="input" placeholder="如：11-14 19:20" data-field="time" bindinput="onInput" />
+  </view>
+  <view class="field">
+    <view class="label">描述</view>
+    <textarea class="textarea" placeholder="物品特征、描述…" data-field="desc" bindinput="onInput" />
+  </view>
+  <view class="field">
+    <view class="label">联系方式</view>
+    <input class="input" placeholder="微信号 / 手机号" data-field="contact" bindinput="onInput" />
+  </view>
+  <button class="btn-primary" bindtap="onSubmit">提交发布</button>
+</view>

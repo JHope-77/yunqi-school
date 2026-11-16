@@ -1,0 +1,8 @@
+.field { margin-bottom: 28rpx; }
+.label { font-size: 26rpx; color: #6B7280; margin-bottom: 12rpx; }
+.input { background: #FFFFFF; border-radius: 16rpx; padding: 22rpx; font-size: 28rpx; }
+.textarea { width: 100%; min-height: 180rpx; background: #FFFFFF; border-radius: 16rpx; padding: 22rpx; font-size: 28rpx; box-sizing: border-box; }
+.types { display: flex; gap: 20rpx; }
+.tp { flex: 1; text-align: center; padding: 20rpx 0; background: #FFFFFF; border-radius: 16rpx; color: #6B7280; }
+.tp.on.red { background: #FFECEA; color: #FF4D3D; font-weight: 700; }
+.tp.on.green { background: #E8F7EE; color: #07C160; font-weight: 700; }

@@ -1,0 +1,15 @@
+.field { margin-bottom: 28rpx; }
+.label { font-size: 26rpx; color: #6B7280; margin-bottom: 12rpx; }
+.input {
+  background: #FFFFFF; border-radius: 16rpx; padding: 22rpx; font-size: 28rpx;
+}
+.textarea {
+  width: 100%; min-height: 180rpx; background: #FFFFFF; border-radius: 16rpx;
+  padding: 22rpx; font-size: 28rpx; box-sizing: border-box;
+}
+.chips { white-space: nowrap; }
+.chip {
+  display: inline-block; padding: 12rpx 24rpx; border-radius: 28rpx;
+  background: #FFFFFF; font-size: 24rpx; color: #6B7280; margin-right: 16rpx;
+}
+.chip.on { background: #2E6BFF; color: #FFFFFF; font-weight: 600; }

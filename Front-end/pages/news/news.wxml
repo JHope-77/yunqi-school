@@ -1,0 +1,6 @@
+<view class="container">
+  <view class="card" wx:for="{{list}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+    <view class="tt">{{item.title}}</view>
+    <view class="muted">{{item.date}} · {{item.summary}}</view>
+  </view>
+</view>

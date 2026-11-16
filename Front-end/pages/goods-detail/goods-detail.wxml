@@ -1,0 +1,25 @@
+<view class="container" wx:if="{{detail}}">
+  <view class="hero" style="background:linear-gradient(135deg,#2E6BFF,#5B8CFF)">{{detail.cat}}</view>
+  <view class="price big">¥{{detail.price}}</view>
+  <view class="title" style="margin:12rpx 0">{{detail.title}}</view>
+  <view class="muted">{{detail.loc}} · {{detail.date}}</view>
+
+  <view class="card">
+    <view class="block-title">商品描述</view>
+    <view class="desc">{{detail.desc}}</view>
+  </view>
+
+  <view class="card seller">
+    <view class="avatar">同</view>
+    <view>
+      <view class="seller-name">同学A</view>
+      <view class="muted">信用良好 · 已发布 3 件</view>
+    </view>
+  </view>
+
+  <view style="height:140rpx"></view>
+  <view class="bottom-bar">
+    <view class="fav" bindtap="contact">收藏</view>
+    <button class="btn-green bar-btn" bindtap="contact">联系卖家</button>
+  </view>
+</view>

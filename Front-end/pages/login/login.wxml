@@ -1,0 +1,16 @@
+<view class="login-page">
+  <view class="logo">云</view>
+  <view class="app-name">云栖校园</view>
+  <view class="slogan">校园生活，一站搞定</view>
+
+  <view class="form">
+    <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+      <image wx:if="{{avatar}}" src="{{avatar}}" class="avatar" mode="aspectFill" />
+      <view wx:else class="avatar placeholder">点击选择头像</view>
+    </button>
+    <input class="nickname" type="nickname" placeholder="请输入昵称" value="{{nickName}}" bindinput="onNickInput" />
+    <button class="submit btn-primary" bindtap="onLogin" disabled="{{!avatar || !nickName}}">微信授权登录</button>
+  </view>
+
+  <view class="tip">登录即代表同意《用户协议》与《隐私政策》</view>
+</view>

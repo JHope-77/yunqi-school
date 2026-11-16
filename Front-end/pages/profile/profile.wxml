@@ -1,0 +1,16 @@
+<view class="container">
+  <view class="user-card">
+    <image class="avatar" src="{{userInfo.avatar}}" mode="aspectFill" />
+    <view class="nick">{{userInfo.nickName || '同学'}}</view>
+    <view class="role">普通学生用户</view>
+  </view>
+
+  <view class="card menu">
+    <view class="m-item">我的发布</view>
+    <view class="m-item">我的收藏</view>
+    <view class="m-item">联系客服</view>
+    <view class="m-item">关于云栖校园</view>
+  </view>
+
+  <button class="logout" bindtap="logout">退出登录</button>
+</view>

@@ -1,0 +1,17 @@
+.user-card {
+  background: linear-gradient(135deg, #2E6BFF, #5B8CFF);
+  border-radius: 24rpx;
+  padding: 48rpx 32rpx;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+.avatar { width: 128rpx; height: 128rpx; border-radius: 50%; background: #FFFFFF; }
+.nick { font-size: 34rpx; font-weight: 700; margin-top: 16rpx; }
+.role { font-size: 22rpx; opacity: 0.85; }
+.menu { padding: 0 24rpx; }
+.m-item { padding: 28rpx 0; border-bottom: 1rpx solid #ECEEF2; font-size: 28rpx; }
+.m-item:last-child { border-bottom: none; }
+.logout { margin-top: 40rpx; background: #FFFFFF; color: #FF4D3D; border-radius: 44rpx; font-size: 28rpx; }

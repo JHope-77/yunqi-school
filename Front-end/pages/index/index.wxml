@@ -1,0 +1,42 @@
+<view class="container">
+  <view class="search-bar" bindtap="goSearch">搜索教材 / 闲置 / 物品</view>
+
+  <view class="banner">
+    <view class="banner-title">校园生活，一站搞定</view>
+    <view class="banner-sub">课表 · 二手 · 失物招领 · 校园资讯</view>
+  </view>
+
+  <view class="grid">
+    <view class="g" data-url="/pages/schedule/schedule" bindtap="goGrid">
+      <view class="g-icon" style="background:#EEF3FF;color:#2E6BFF">课</view>
+      <view>课表</view>
+    </view>
+    <view class="g" data-url="/pages/market/market" bindtap="goGrid">
+      <view class="g-icon" style="background:#FFF1E8;color:#F06B3B">二</view>
+      <view>二手</view>
+    </view>
+    <view class="g" data-url="/pages/lost/lost" bindtap="goGrid">
+      <view class="g-icon" style="background:#E8F7EE;color:#07C160">失</view>
+      <view>失物</view>
+    </view>
+    <view class="g" data-url="/pages/news/news" bindtap="goGrid">
+      <view class="g-icon" style="background:#F3EDFF;color:#7A5CFF">讯</view>
+      <view>资讯</view>
+    </view>
+  </view>
+
+  <view class="section-title">
+    <text>校园资讯</text>
+    <text class="more" bindtap="goGrid" data-url="/pages/news/news">全部 ›</text>
+  </view>
+
+  <view class="card">
+    <view class="news-item" wx:for="{{news}}" wx:key="id" bindtap="goGrid" data-url="/pages/news-detail/news-detail?id={{item.id}}">
+      <view class="news-thumb" style="background:linear-gradient(135deg,#2E6BFF,#5B8CFF)">讯</view>
+      <view class="news-body">
+        <view class="news-title">{{item.title}}</view>
+        <view class="muted">{{item.date}} · {{item.summary}}</view>
+      </view>
+    </view>
+  </view>
+</view>

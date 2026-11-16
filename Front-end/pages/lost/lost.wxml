@@ -1,0 +1,19 @@
+<view class="container">
+  <view class="tabs">
+    <view wx:for="{{tabs}}" wx:key="*this"
+          class="tab {{index === cur ? 'on' : ''}}"
+          data-i="{{index}}" bindtap="pickTab">{{item}}</view>
+  </view>
+
+  <view class="card" wx:for="{{list}}" wx:key="id">
+    <view class="row">
+      <view class="tag {{item.type === 'miss' ? 'red' : 'green'}}">{{item.type === 'miss' ? '寻物' : '招领'}}</view>
+      <view class="tt">{{item.title}}</view>
+    </view>
+    <view class="muted">地点：{{item.place}}</view>
+    <view class="muted">时间：{{item.time}}</view>
+    <view class="desc">{{item.desc}}</view>
+  </view>
+
+  <view class="fab" bindtap="goPublish">+</view>
+</view>
